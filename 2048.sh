@@ -1,3 +1,6 @@
+# move: wasd
+# exit: q
+
   ## colors ##
   
 border=238
@@ -17,7 +20,7 @@ tile[2048]=220
   ## functions ##
   
 function range {
-  echo `seq 0 $(( $1-1 ))`
+  echo `seq 0 $(( $1-1 ))`	# yep, i love python more than bash 
 }
 function newTile {
   if [[ $1 -eq 0 ]]

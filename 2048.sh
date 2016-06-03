@@ -1,3 +1,5 @@
+#!/bin/bash
+
   ## colors ##
   
 border=238
@@ -29,20 +31,12 @@ function newTile {
   a[${blank[$x]}]=$q
 }
 function line {
-  echo -en "\e[38;5;${border}m+\e[0m"
+  echo -en "+"
   for i in `range $n` 
     do
-      echo -en "\e[38;5;${border}m - - - +\e[0m"
+      echo -en " - - - +" 
     done
   echo 
-}
-function pipes {
-  echo -en "\e[38;5;${border}m|\e[0m"
-  for i in `range $n`
-  do
-  echo -en "       \e[38;5;${border}m|\e[0m"
-  done
-  echo
 }
 function shft {
   for j in `range $n` 
@@ -114,6 +108,17 @@ function count {
       fi
 done
 }
+function formattedTile {
+  if [[ $1 -lt 100 ]]
+    then
+      wh1="  "
+      wh2="   "
+    else
+      wh1=" "
+      wh2="  "
+    fi
+  echo -en "${wh1}\e[1m\e[38;5;${tile[$1]}m$x\e[0m\e[21m${wh2}"
+}
  
   ## init ##
 
@@ -126,20 +131,34 @@ n=4
 t=0
 blank=( )
 win=0
+tput clear
+tput civis
 count
 newTile $t
 count
 newTile $t
+echo -en "\e[38;5;${border}m"
+for i in `range 4`
+  do
+    line
+    for k in `range 3`
+      do
+	for j in `range 5`
+	  do
+	    echo -n "$(tput hpa $(( j*8 )))|"	
+	  done
+	echo 
+      done
+  done
+line
+echo -en "\e[0m"
 
     ## game ##
     
 while ([ "$w" != "q" ])
 do
-  printf "\033c"
-  line
   for j in `range $n` 
     do
-      pipes
       for i in `range $n` 
 	do
 	  x=${a[$(( j*n+i ))]}
@@ -147,37 +166,16 @@ do
 	    then
 	      win=1
 	    fi
-	  if [[ $x -lt 100 ]]
-	    then
-	      wh1="   "
-	      if [[ $x -lt 10 ]]
-		then
-		  wh2="   "
-		else
-		  wh2="  "
-	      fi
-	    else
-	      wh1="  "
-	      if [[ $x -lt 1000 ]]
-		then
-		  wh2="  "
-		else
-		  wh2=" "
-		fi
-	    fi
-	  echo -en "\e[38;5;${border}m|\e[0m$wh1\e[1m\e[38;5;${tile[$x]}m$x\e[0m\e[21m$wh2"
+	  tput cup $(( j*4+3 )) $(( i*8+1 ))
+	  formattedTile $x
 	done
-      echo -e "\e[38;5;${border}m|\e[0m"
-      pipes
-      line 
     done   
   if [[ $win -eq 1 ]]
     then
       gameOver 1
     fi
-  
-  read -n 1 -s w
-  
+    
+  read -n 1 -s w 
 
   count
   c1=( )
@@ -202,3 +200,5 @@ do
   newTile $t 
 
 done
+tput cnorm
+tput cup 17 0

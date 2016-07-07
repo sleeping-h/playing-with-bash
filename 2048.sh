@@ -51,9 +51,9 @@ function shft {
       b=( )
       c=( )
       for i in `range $n`
-  do
-    c[$i]=${a[$(( (i*n+j)*ifVer+(j*n+i)*ifHor ))]}
-  done
+        do
+          c[$i]=${a[$(( (i*n+j)*ifVer+(j*n+i)*ifHor ))]}
+        done
       u ${c[@]}
       if [[ $k -gt 1 ]]; then
       add; fi
@@ -63,22 +63,22 @@ function shft {
       k=0
       u ${c[@]}
       for i in `range $k`
-  do
-    ifReversed=$(( (ifVerRev*n+ifHorRev)*(n-1) ))
-    byRows=$(( (-1)**ifVerRev*(i*ifVer+j*ifHor)*n ))
-    byCols=$(( (-1)**ifHorRev*(j*ifVer+i*ifHor) ))
-    backwards=$(( ifVerRev+ifHorRev ))
-    a[$((  ifReversed+byRows+byCols ))]=${b[$(( backwards*(k-1)+i*(-1)**backwards ))]}
-  done
+        do
+          ifReversed=$(( (ifVerRev*n+ifHorRev)*(n-1) ))
+          byRows=$(( (-1)**ifVerRev*(i*ifVer+j*ifHor)*n ))
+          byCols=$(( (-1)**ifHorRev*(j*ifVer+i*ifHor) ))
+          backwards=$(( ifVerRev+ifHorRev ))
+          a[$((  ifReversed+byRows+byCols ))]=${b[$(( backwards*(k-1)+i*(-1)**backwards ))]}
+        done
       for i in `seq $k $(( n-1 ))`
-  do
-    ifReversed=$(( (ifVerRev*n+ifHorRev)*(n-1) ))
-    byRows=$(( (-1)**ifVerRev*(i*ifVer+j*ifHor)*n ))
-    byCols=$(( (-1)**ifHorRev*(j*ifVer+i*ifHor) ))
-    a[$(( ifReversed+byRows+byCols ))]=0  
-  done
+        do
+          ifReversed=$(( (ifVerRev*n+ifHorRev)*(n-1) ))
+          byRows=$(( (-1)**ifVerRev*(i*ifVer+j*ifHor)*n ))
+          byCols=$(( (-1)**ifHorRev*(j*ifVer+i*ifHor) ))
+          a[$(( ifReversed+byRows+byCols ))]=0  
+        done
 
-echo
+      echo
     done
 #     echo ${a[@]}
 }
@@ -88,40 +88,40 @@ function gameOver {
       echo "You win!"
     else
       echo "Game Over!"
-  fi
+    fi
   exit    
 }
 function u {
   for i in $*
     do
       if [[ $i -ne 0 ]]
-  then
-    b[$k]=$i
-    let k++
-  fi
+        then
+          b[$k]=$i
+          let k++
+        fi
     done
 }
 function add {
   for i in `seq 1 $(( k-1 ))`
     do
       if [[ ${b[$i]} -eq ${b[$(( i-1 ))]} ]]
-  then
-    let b[i-1]*=2
-    b[$i]=0
-  fi
+        then
+          let b[i-1]*=2
+          b[$i]=0
+        fi
     done
 }
 function count {
   t=0
   blank=( )
   for i in `range $(( n*n ))`
-  do
-    if [[ ${a[$i]} -eq 0 ]]
-      then
-  blank[$t]=$i
-  let t++
-      fi
-done
+    do
+      if [[ ${a[$i]} -eq 0 ]]
+        then
+          blank[$t]=$i
+          let t++
+        fi
+    done
 }
 function formattedTile {
   if [[ $1 -lt 100 ]]
@@ -132,7 +132,7 @@ function formattedTile {
       wh1=" "
       wh2="  "
     fi
-  echo -en "${wh1}\e[1m\e[38;5;${tile[$1]}m$x\e[0m\e[21m${wh2}"
+  echo -en "${wh1}\e[1m\e[38;5;${tile[$1]}m$1\e[0m\e[21m${wh2}"
 }
  
   ## init ##
@@ -158,11 +158,11 @@ for i in `range 4`
     line
     for k in `range 3`
       do
-  for j in `range 5`
-    do
-      echo -n "$(tput hpa $(( j*8 )))|"  
-    done
-  echo 
+        for j in `range 5`
+          do
+            echo -n "$(tput hpa $(( j*8 )))|"  
+          done
+        echo 
       done
   done
 line
@@ -175,15 +175,15 @@ do
   for j in `range $n` 
     do
       for i in `range $n` 
-  do
-    x=${a[$(( j*n+i ))]}
-    if [[ $x -eq 2048 ]]
-      then
-        win=1
-      fi
-    tput cup $(( j*4+3 )) $(( i*8+1 ))
-    formattedTile $x
-  done
+        do
+          x=${a[$(( j*n+i ))]}
+          if [[ $x -eq 2048 ]]
+            then
+            win=1
+            fi
+          tput cup $(( j*4+3 )) $(( i*8+1 ))
+          formattedTile $x
+        done
     done   
   if [[ $win -eq 1 ]]
     then

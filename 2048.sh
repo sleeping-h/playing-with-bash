@@ -21,7 +21,7 @@ tile[2048]=220
   ## functions ##
   
 function range {
-  echo `seq 0 $(( $1-1 ))`	# yep, i love python more than bash 
+  echo `seq 0 $(( $1-1 ))`  # yep, i love python more than bash 
 }
 function newTile {
   if [[ $1 -eq 0 ]]
@@ -41,15 +41,19 @@ function line {
   echo 
 }
 function shft {
+  ifVer=$1
+  ifHor=$2
+  ifVerRev=$3
+  ifHorRev=$4
   for j in `range $n` 
     do
       k=0
       b=( )
       c=( )
       for i in `range $n`
-	do
-	  c[$i]=${a[$(( (i*n+j)*$1+(j*n+i)*$2 ))]}
-	done
+  do
+    c[$i]=${a[$(( (i*n+j)*ifVer+(j*n+i)*ifHor ))]}
+  done
       u ${c[@]}
       if [[ $k -gt 1 ]]; then
       add; fi
@@ -59,15 +63,24 @@ function shft {
       k=0
       u ${c[@]}
       for i in `range $k`
-	do
-	  a[$(( ($3*n+$4)*(n-1)+n*(-1)**$3*(i*$1+j*$2)+(-1)**$4*(j*$1+i*$2) ))]=${b[$(( ($3+$4)*(k-1)+(-1)**$3*(-1)**$4*i ))]} # :3
-	done
+  do
+    ifReversed=$(( (ifVerRev*n+ifHorRev)*(n-1) ))
+    byRows=$(( (-1)**ifVerRev*(i*ifVer+j*ifHor)*n ))
+    byCols=$(( (-1)**ifHorRev*(j*ifVer+i*ifHor) ))
+    backwards=$(( ifVerRev+ifHorRev ))
+    a[$((  ifReversed+byRows+byCols ))]=${b[$(( backwards*(k-1)+i*(-1)**backwards ))]}
+  done
       for i in `seq $k $(( n-1 ))`
-	do
-	  a[$(( ($3*n+$4)*(n-1)+n*(-1)**$3*(i*$1+j*$2)+(-1)**$4*(j*$1+i*$2) ))]=0	 
-	done
+  do
+    ifReversed=$(( (ifVerRev*n+ifHorRev)*(n-1) ))
+    byRows=$(( (-1)**ifVerRev*(i*ifVer+j*ifHor)*n ))
+    byCols=$(( (-1)**ifHorRev*(j*ifVer+i*ifHor) ))
+    a[$(( ifReversed+byRows+byCols ))]=0  
+  done
+
 echo
     done
+#     echo ${a[@]}
 }
 function gameOver {
   if [[ $1 -eq 1 ]]
@@ -82,20 +95,20 @@ function u {
   for i in $*
     do
       if [[ $i -ne 0 ]]
-	then
-	  b[$k]=$i
-	  let k++
-	fi
+  then
+    b[$k]=$i
+    let k++
+  fi
     done
 }
 function add {
   for i in `seq 1 $(( k-1 ))`
     do
       if [[ ${b[$i]} -eq ${b[$(( i-1 ))]} ]]
-	then
-	  let b[i-1]*=2
-	  b[$i]=0
-	fi
+  then
+    let b[i-1]*=2
+    b[$i]=0
+  fi
     done
 }
 function count {
@@ -105,8 +118,8 @@ function count {
   do
     if [[ ${a[$i]} -eq 0 ]]
       then
-	blank[$t]=$i
-	let t++
+  blank[$t]=$i
+  let t++
       fi
 done
 }
@@ -145,11 +158,11 @@ for i in `range 4`
     line
     for k in `range 3`
       do
-	for j in `range 5`
-	  do
-	    echo -n "$(tput hpa $(( j*8 )))|"	
-	  done
-	echo 
+  for j in `range 5`
+    do
+      echo -n "$(tput hpa $(( j*8 )))|"  
+    done
+  echo 
       done
   done
 line
@@ -162,15 +175,15 @@ do
   for j in `range $n` 
     do
       for i in `range $n` 
-	do
-	  x=${a[$(( j*n+i ))]}
-	  if [[ $x -eq 2048 ]]
-	    then
-	      win=1
-	    fi
-	  tput cup $(( j*4+3 )) $(( i*8+1 ))
-	  formattedTile $x
-	done
+  do
+    x=${a[$(( j*n+i ))]}
+    if [[ $x -eq 2048 ]]
+      then
+        win=1
+      fi
+    tput cup $(( j*4+3 )) $(( i*8+1 ))
+    formattedTile $x
+  done
     done   
   if [[ $win -eq 1 ]]
     then

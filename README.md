@@ -6,7 +6,7 @@ everyone knows this game :)
 
 a tiny console version
 
-![](http://i.imgur.com/pcsb7yV.png)  
+![](http://i.imgur.com/kEfwyHQ.png)  
 
 move: _w a s d_, exit: _q_
 

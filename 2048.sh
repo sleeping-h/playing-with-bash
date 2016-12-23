@@ -38,7 +38,9 @@ format() {
 }
 
 show() {
-    for i in `seq 0 $((n-1))`; do
+    for i in `seq 0 $((n-1))`; do # TODO read pos of curent shell line
+        tput cup $((i*2+1)) 0
+        echo '                                   '
         for j in `seq 0 $((n-1))`; do
             tput cup $((i*2+1)) $((j*5+1))
             format ${a[i*n+j]}
@@ -100,8 +102,8 @@ shift_() {
 new_tile
 new_tile
 tput civis
+tput clear
 while [[ "$w" != "q" ]]; do
-    tput clear
     tput cup 0 0
     show
     prev="${a[@]}"

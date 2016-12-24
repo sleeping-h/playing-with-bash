@@ -38,7 +38,7 @@ format() {
 }
 
 show() {
-    for i in `seq 0 $((n-1))`; do # TODO read pos of curent shell line
+    for i in `seq 0 $((n-1))`; do 
         tput cup $((i*2+1)) 0
         echo '                                   '
         for j in `seq 0 $((n-1))`; do
@@ -52,7 +52,7 @@ show() {
 slice() {
     for i in `seq $1 $2 $3`; do
         echo ${a[i]}
-    done
+    done | ([[ $4 == 1 ]] && tac || cat)
 }
 
 shifted() {
@@ -66,7 +66,7 @@ shifted() {
             echo $x
             x=$y
         fi
-    done    
+    done | ([[ $1 == 1 ]] && tac || cat)  
 }
 
 add_zeros() {
@@ -89,9 +89,9 @@ shift_() {
     s=$(( horiz ? 1 : n ))
     reverse=$2
     for j in `seq 0 $((n-1))`; do
-        l=$(( horiz ? n*j : j ))
-        r=$(( horiz ? n*(j+1)-1 : n**2-1 ))
-        new=$(slice $l $s $r | sed '/^0$/d' | shifted | add_zeros $reverse)
+        l=$(( horiz ? n*j : j )) 
+        r=$(( horiz ? n*(j+1)-1 : n**2-(n-j) ))
+        new=$(slice $l $s $r $reverse | sed '/^0$/d' | shifted $reverse | add_zeros $reverse)
         for i in `seq $l $s $r`; do
             read x
             a[$i]=$x

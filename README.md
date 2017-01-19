@@ -10,8 +10,19 @@ a tiny console version
 
 move: _w a s d_, exit: _q_
 
+####   arkanoid.sh
+simple ascii version
+
+unfortunately bash doesn't support floats <br>
+and available cursor positions are also <br>
+integer and discret, so "physics" is very rough
+
+![](http://i.imgur.com/oih7cCX.png)  
+
+move: a d, exit: q
+
 ####   dragon_curve.sh
-pocket Heighway ascii-dragon like this one:
+draws a fractal using L-systems
 ```
      _   _
    _| |_|_|          _

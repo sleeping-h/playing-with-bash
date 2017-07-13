@@ -13,7 +13,7 @@ blanks=( )
 update_blanks() {
     read -r -a blanks <<< $(
     for i in `seq 0 $(( n**2-1 ))`; do
-        (( ! ${a[i]} )) && echo $i
+        (( ! ${a[i]} )) && echo -n "$i "
     done)
 }
 

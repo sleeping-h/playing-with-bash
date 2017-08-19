@@ -31,7 +31,7 @@ echo_tile() {
 
 show() {
     for i in `seq 0 $(( n**2-1 ))`; do 
-        echo_tile ${a[i]} $(( i/n*2+1 )) $(( i%n*5+1 ))
+        echo_tile ${a[i]} $(( i/n*2+2 )) $(( i%n*5+3 ))
     done
 }
 
@@ -76,6 +76,7 @@ shift_all() {
     done
 }
 
+stty -echo
 new_tile
 new_tile
 tput civis
@@ -93,4 +94,5 @@ while [[ "$w" != "q" ]]; do
     [[ $prev != "${a[@]}" ]] && (( ${#blanks[@]} != 0 )) && new_tile
 done
 tput cnorm
+stty echo
 echo

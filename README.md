@@ -2,8 +2,6 @@
 definetly wrong way of using bash
 
 ####   2048.sh
-everyone knows this game :)
-
 a tiny console version
 
 ![](http://i.imgur.com/kEfwyHQ.png)  
@@ -11,11 +9,6 @@ a tiny console version
 move: _w a s d_, exit: _q_
 
 ####   arkanoid.sh
-simple ascii version
-
-unfortunately bash doesn't support floats <br>
-and available cursor positions are also <br>
-integer and discret, so "physics" is very rough
 
 ![](http://i.imgur.com/oih7cCX.png)  
 
